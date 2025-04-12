@@ -1,0 +1,18 @@
+[
+  {
+    "crop_name": "Milho",
+    "input_type": "fertilizante",
+    "input_name": "NPK 20-05-20",
+    "quantity": 100,
+    "unit": "kg",
+    "application_date": "2024-09-10"
+  },
+  {
+    "crop_name": "Soja",
+    "input_type": "defensivo",
+    "input_name": "Inseticida X",
+    "quantity": 5,
+    "unit": "L",
+    "application_date": "2024-11-01"
+  }
+]
