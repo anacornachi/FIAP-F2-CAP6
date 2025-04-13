@@ -112,6 +112,13 @@ Dentre os arquivos e pastas presentes na raiz do projeto, definem-se:
     * Documentação (README) criada seguindo o modelo PBL.
     * Adicionado o menu principal de navegação para o usuário.
     * Criado o primeiro fluxo: registro de culturas com validação de dados utilizando Cerberus e tratamento de erros com mensagens amigáveis.
+* 0.2.0 - 13/04/2025 
+    * Integração com banco de dados OracleDB para persistência de culturas. 
+    * Refatoração dos fluxos de cadastro e importação de culturas para salvamento direto no banco. 
+    * Inclusão do método get_all_crops para leitura de registros persistidos. 
+    * Implementação do validador customizado com suporte à regra regex_if_not_empty. 
+    * Criação de testes unitários e de integração com dados reais e arquivos JSON simulando o uso em produção. 
+    * Setup automatizado para truncar registros de teste antes e depois de cada execução.
 
 
 ## 📋 Licença

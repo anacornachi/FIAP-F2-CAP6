@@ -1,5 +1,6 @@
 from src import crop_manager, forecast, reports, input_manager
 
+
 def show_menu():
     print("\n=== Sistema de Gestão Agrícola ===")
     print("1. Cadastrar cultura manualmente")
@@ -18,30 +19,30 @@ def main():
         show_menu()
         option = input("Escolha uma opção: ")
 
-        if option == '1':
-           crop_manager.register_crop()
-        elif option == '2':
-           crop_manager.import_crops_from_json()
-        elif option == '3':
-           input_manager.register_input()
-        elif option == '4':
+        if option == "1":
+            # ✅Feito
+            crop_manager.register_crop()
+        elif option == "2":
+            # ✅Feito
+            crop_manager.import_crops_from_json()
+        elif option == "3":
+            input_manager.register_input()
+        elif option == "4":
             input_manager.import_inputs_from_json()
-        elif option == '5':
+        elif option == "5":
             reports.generate_crop_report()
-        elif option == '6':
+        elif option == "6":
             reports.generate_input_report()
-        elif option == '7':
+        elif option == "7":
             forecast.predict_demand()
-        elif option == '8':
+        elif option == "8":
             crop_manager.update_harvest_date()
-        elif option == '9':
+        elif option == "9":
             print("Encerrando o programa.")
             break
         else:
             print("❌ Opção inválida. Tente novamente.")
 
+
 if __name__ == "__main__":
     main()
-
-
-#     Ao inputar uma cultura agricula, nao esta tendo validacao do dado inputado

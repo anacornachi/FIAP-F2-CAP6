@@ -1,1 +1,23 @@
-{"name": "soja", "planting_date": "2021-02-03", "harvest_date": null, "area": 0.3, "productivity": 2.0}
+[
+  {
+    "name": "Milho",
+    "planting_date": "2024-10-15",
+    "harvest_date": "2025-02-10",
+    "area": 5.0,
+    "productivity": 8.5
+  },
+  {
+    "name": "Soja",
+    "planting_date": "2024-11-01",
+    "harvest_date": "2025-03-20",
+    "area": 3.2,
+    "productivity": 3.0
+  },
+  {
+    "name": "Feijão",
+    "planting_date": "2024-09-10",
+    "harvest_date": "",
+    "area": 2.5,
+    "productivity": 2.5
+  }
+]

@@ -1,6 +1,8 @@
 from copy import deepcopy
 from cerberus import Validator
 
+from src.schemas.custom_validator import CustomValidator
+
 FRIENDLY_ERRORS = {
     "required field": "Campo obrigatório.",
     "empty values not allowed": "Este campo não pode ficar em branco.",
@@ -23,8 +25,9 @@ FIELD_PROMPTS = {
     "input_name": "Nome do insumo: ",
     "quantity": "Quantidade aplicada: ",
     "unit": "Unidade (kg, g, L, ml, sacos): ",
-    "application_date": "Data de aplicação (AAAA-MM-DD): "
+    "application_date": "Data de aplicação (AAAA-MM-DD): ",
 }
+
 
 def translate_error(error: str) -> str:
     for key in FRIENDLY_ERRORS:
@@ -34,11 +37,11 @@ def translate_error(error: str) -> str:
 
 
 def validate_with_schema(schema: dict, data: dict) -> tuple:
-    v = Validator(schema)
-    if v.validate(data):
-        return True, v.document
+    validator = CustomValidator(schema, require_all=True)
+    if validator.validate(data):
+        return True, validator.document
     else:
-        return False, v.errors
+        return False, validator.errors
 
 
 def prompt_and_validate(schema: dict, fields_order: list) -> dict:
@@ -49,7 +52,7 @@ def prompt_and_validate(schema: dict, fields_order: list) -> dict:
         field_schema = deepcopy(schema[field])
         field_schema["required"] = False
 
-        validator = Validator({field: field_schema})
+        validator = CustomValidator({field: field_schema})
         label = FIELD_PROMPTS.get(field, f"{field.replace('_', ' ').capitalize()}: ")
 
         while True:
