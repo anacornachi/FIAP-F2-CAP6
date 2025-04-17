@@ -36,3 +36,14 @@ def save_crop_to_db(crop_data):
             cursor.close()
         if "conn" in locals():
             conn.close()
+
+
+def get_all_crops():
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, name FROM crops")
+    rows = cursor.fetchall()
+    columns = [desc[0].lower() for desc in cursor.description]
+    cursor.close()
+    conn.close()
+    return [dict(zip(columns, row)) for row in rows]

@@ -1,39 +1,60 @@
 from src.schemas.input_schema import input_schema
-from src.validations import prompt_and_validate, validate_with_schema
-from src.files import save_data, load_json_list
-from src.files import load_data
-
-INPUT_FILE = "data/insumos.json"
+from src.validations import prompt_and_validate
+from src.repositories.input_repository import save_input_to_db
+from src.repositories.input_repository import save_input_application_to_db
+from src.schemas.application_schema import application_schema
+from src.validations import prompt_and_validate
+from src.repositories.crop_repository import get_all_crops
+from src.repositories.input_repository import get_all_inputs
 
 def register_input():
-    print("\n💧 Cadastro de Insumo Agrícola")
-    fields = ["crop_name", "input_type", "input_name", "quantity", "unit", "application_date"]
+    print("\n🧪 Cadastro de Insumo (catálogo)")
+    fields = ["input_type", "input_name", "unit", "unit_price"]
 
     validated_data = prompt_and_validate(input_schema, fields)
+
     if validated_data:
-        save_data(INPUT_FILE, validated_data)
-        print("✅ Insumo cadastrado com sucesso!\n")
+        save_input_to_db(validated_data)
+        print("✅ Insumo cadastrado com sucesso no catálogo!\n")
 
-def import_inputs_from_json():
-    print("\n📂 Importação de Insumos via JSON")
-    path = input("Informe o caminho do arquivo: ").strip()
-    data = load_json_list(path)
+        should_link = input("Deseja vincular este insumo a alguma cultura agora? (s/n): ").strip().lower()
+        if should_link == "s":
+            print("🔗 Em breve será redirecionado para o vínculo com cultura...")
+            apply_input_to_crop()
+        else:
+            print("👍 Cadastro finalizado. Você pode vincular este insumo mais tarde.\n")
 
-    if not data:
-        print("⚠️ Nenhum dado válido encontrado.")
+
+def apply_input_to_crop():
+    print("\n🔗 Vincular insumo a cultura")
+
+    crops = get_all_crops()
+    inputs = get_all_inputs()
+
+    if not crops or not inputs:
+        print("⚠️ É necessário ter pelo menos uma cultura e um insumo cadastrados.")
         return
 
-    success, failure = 0, 0
-    for i, item in enumerate(data, start=1):
-        is_valid, result = validate_with_schema(input_schema, item)
-        if is_valid:
-            save_data(INPUT_FILE, result)
-            success += 1
-        else:
-            print(f"\n❌ Erros no registro {i}:")
-            for field, msgs in result.items():
-                for msg in msgs:
-                    print(f" - {field}: {msg}")
-            failure += 1
+    print("\n🌱 Culturas disponíveis:")
+    for c in crops:
+        print(f"{c['id']}: {c['name']}")
 
-    print(f"\n✅ {success} insumo(s) importado(s) com sucesso. ❌ {failure} com erro(s).")
+    print("\n🧪 Insumos disponíveis:")
+    for i in inputs:
+        print(f"{i['id']}: {i['input_name']} ({i['input_type']})")
+
+    fields = [
+        "crop_id",
+        "input_id",
+        "quantity",
+        "unit",
+        "application_date",
+        "recurrence",
+        "recurrence_days"
+    ]
+
+    validated_data = prompt_and_validate(application_schema, fields)
+
+    if validated_data:
+        save_input_application_to_db(validated_data)
+        print("✅ Insumo aplicado à cultura com sucesso!\n")

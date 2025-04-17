@@ -7,11 +7,12 @@ def show_menu():
     print("2. Importar culturas via JSON")
     print("3. Cadastrar insumo manualmente")
     print("4. Importar insumos via JSON")
-    print("5. Relatório de culturas")
-    print("6. Relatório de insumos")
-    print("7. Prever demanda de insumo")
-    print("8. Atualizar data de colheita")
-    print("9. Sair")
+    print("6. Aplicar insumo em cultura")
+    print("7. Relatório de culturas")
+    print("8. Relatório de insumos")
+    print("9. Prever demanda de insumo")
+    print("10. Atualizar data de colheita")
+    print("11. Sair")
 
 
 def main():
@@ -26,11 +27,18 @@ def main():
             # ✅Feito
             crop_manager.import_crops_from_json()
         elif option == "3":
+            # Cadastrar insumo
+            # Validar os dados
+            # Registrar no banco
+            # Fazer um teste manual
+            # Fazer teste automatizado
             input_manager.register_input()
         elif option == "4":
             input_manager.import_inputs_from_json()
         elif option == "5":
             reports.generate_crop_report()
+        if opcao == "4":
+                apply_input_to_crop()
         elif option == "6":
             reports.generate_input_report()
         elif option == "7":
@@ -46,3 +54,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+# TODO: Fazer uma opção do menu de vincular um insumo a uma cultura existente

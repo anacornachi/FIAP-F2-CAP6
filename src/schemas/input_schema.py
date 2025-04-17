@@ -1,8 +1,23 @@
 input_schema = {
-    "crop_name": {"type": "string", "empty": False},
-    "input_type": {"type": "string", "allowed": ["fertilizante", "semente", "defensivo"]},
-    "input_name": {"type": "string", "empty": False},
-    "quantity": {"type": "float", "min": 0.01},
-    "unit": {"type": "string", "allowed": ["kg", "g", "L", "ml", "sacos"]},
-    "application_date": {"type": "string", "regex": r"^\d{4}-\d{2}-\d{2}$"}
+    "input_type": {
+        "type": "string",
+        "required": True,
+        "allowed": ["fertilizante", "semente", "defensivo", "adubo"]
+    },
+    "input_name": {
+        "type": "string",
+        "required": True,
+        "empty": False
+    },
+    "unit": {
+        "type": "string",
+        "required": True,
+        "allowed": ["kg", "g", "L", "ml", "sacos"]
+    },
+    "unit_price": {
+        "type": "float",
+        "required": True,
+        "min": 0.01,
+        "coerce": float
+    }
 }

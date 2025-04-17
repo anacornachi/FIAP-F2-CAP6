@@ -64,31 +64,31 @@ def get_all_crops():
     return crops
 
 
-def update_harvest_date():
-    print("\n🌾 Atualizar data de colheita")
-    name = input("Nome da cultura: ").strip()
-    crops = load_data(CROPS_FILE)
-    updated = False
-
-    for crop in crops:
-        if crop["name"].lower() == name.lower():
-            if crop.get("harvest_date"):
-                print("⚠️ Esta cultura já possui data de colheita.")
-            else:
-                new_date = input("Nova data de colheita (AAAA-MM-DD): ").strip()
-                crop["harvest_date"] = new_date
-                is_valid, result = validate_with_schema(crop_schema, crop)
-                if is_valid:
-                    updated = True
-                else:
-                    print("❌ Data inválida. Atualização não realizada.")
-                    return
-
-    if updated:
-        save_data(CROPS_FILE, crops, overwrite=True)
-        print("✅ Data de colheita atualizada.")
-    else:
-        print("❌ Cultura não encontrada ou já atualizada.")
+# def update_harvest_date():
+#     print("\n🌾 Atualizar data de colheita")
+#     name = input("Nome da cultura: ").strip()
+#     crops = load_data(CROPS_FILE)
+#     updated = False
+#
+#     for crop in crops:
+#         if crop["name"].lower() == name.lower():
+#             if crop.get("harvest_date"):
+#                 print("⚠️ Esta cultura já possui data de colheita.")
+#             else:
+#                 new_date = input("Nova data de colheita (AAAA-MM-DD): ").strip()
+#                 crop["harvest_date"] = new_date
+#                 is_valid, result = validate_with_schema(crop_schema, crop)
+#                 if is_valid:
+#                     updated = True
+#                 else:
+#                     print("❌ Data inválida. Atualização não realizada.")
+#                     return
+#
+#     if updated:
+#         save_data(CROPS_FILE, crops, overwrite=True)
+#         print("✅ Data de colheita atualizada.")
+#     else:
+#         print("❌ Cultura não encontrada ou já atualizada.")
 
 
 if __name__ == "__main__":
