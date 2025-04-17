@@ -119,7 +119,20 @@ Dentre os arquivos e pastas presentes na raiz do projeto, definem-se:
     * Implementação do validador customizado com suporte à regra regex_if_not_empty. 
     * Criação de testes unitários e de integração com dados reais e arquivos JSON simulando o uso em produção. 
     * Setup automatizado para truncar registros de teste antes e depois de cada execução.
-
+* 0.3.0 - 17/04/2025 
+    * Criação do fluxo de cadastro de insumos com unidade de medida e preço por unidade. 
+    * Salvamento dos insumos no banco Oracle e visualização no terminal.
+    * Implementação da aplicação de insumos em culturas com suporte à frequência e intervalo de aplicação.
+    * Relacionamento N:N entre culturas e insumos por meio da tabela crop_input_applications.
+    * Detecção automática da unidade do insumo ao aplicar em uma cultura, evitando repetição desnecessária.
+    * Atualização do sistema de prompts com mensagens contextualizadas em português.
+    * Criação do fluxo de importação de insumos via arquivo JSON.
+    * Testes automatizados completos para:
+      * Cadastro manual de insumo
+      * Importação de insumos via JSON
+      * Aplicação de insumo em cultura
+      * Casos de erro e borda com mensagens específicas
+    * Correção de mensagens de erro e validações para melhorar a experiência do usuário final.
 
 ## 📋 Licença
 

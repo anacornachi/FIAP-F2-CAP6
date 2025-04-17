@@ -1,6 +1,7 @@
 from copy import deepcopy
 from cerberus import Validator
 
+from src.repositories.input import get_input_by_id
 from src.schemas.custom_validator import CustomValidator
 
 FRIENDLY_ERRORS = {
@@ -25,7 +26,12 @@ FIELD_PROMPTS = {
     "input_name": "Nome do insumo: ",
     "quantity": "Quantidade aplicada: ",
     "unit": "Unidade (kg, g, L, ml, sacos): ",
+    "unit_price": "Preço unitário do insumo (em R$): ",
     "application_date": "Data de aplicação (AAAA-MM-DD): ",
+    "recurrence": "Frequência da aplicação (única, semanal, quinzenal, mensal): ",
+    "recurrence_days": "Intervalo de dias entre aplicações (ex: 7, 15, 30): ",
+    "crop_id": "Número da cultura: ",
+    "input_id": "Número do insumo: ",
 }
 
 
@@ -58,11 +64,25 @@ def prompt_and_validate(schema: dict, fields_order: list) -> dict:
         while True:
             value = input(label).strip()
 
+            if field in ["unit", "input_type", "recurrence"]:
+                value = value.lower()
+
+            if field == "quantity" and "input_id" in result:
+                unit = get_input_by_id(result["input_id"])["unit"]
+                label = f"Quantidade aplicada (em {unit}): "
+
             if schema[field]["type"] == "float":
                 try:
                     value = float(value)
                 except ValueError:
                     print("❌ Valor inválido. Digite um número com ponto decimal.")
+                    continue
+
+            if schema[field]["type"] == "integer":
+                try:
+                    value = int(value)
+                except ValueError:
+                    print("❌ Valor inválido. Digite um número inteiro.")
                     continue
 
             if value == "":

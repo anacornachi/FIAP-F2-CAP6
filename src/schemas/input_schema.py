@@ -12,7 +12,7 @@ input_schema = {
     "unit": {
         "type": "string",
         "required": True,
-        "allowed": ["kg", "g", "L", "ml", "sacos"]
+        "allowed": ["kg", "g", "l", "ml", "sacos"]
     },
     "unit_price": {
         "type": "float",

@@ -1,18 +1,14 @@
 [
   {
-    "crop_name": "Milho",
     "input_type": "fertilizante",
-    "input_name": "NPK 20-05-20",
-    "quantity": 100,
+    "input_name": "NPK 4-14-8",
     "unit": "kg",
-    "application_date": "2024-09-10"
+    "unit_price": 4.75
   },
   {
-    "crop_name": "Soja",
-    "input_type": "defensivo",
-    "input_name": "Inseticida X",
-    "quantity": 5,
-    "unit": "L",
-    "application_date": "2024-11-01"
+    "input_type": "semente",
+    "input_name": "Milho Híbrido",
+    "unit": "sacos",
+    "unit_price": 280.00
   }
 ]

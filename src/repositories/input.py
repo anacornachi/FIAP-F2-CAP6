@@ -41,3 +41,13 @@ def get_all_inputs():
     cursor.close()
     conn.close()
     return [dict(zip(columns, row)) for row in rows]
+
+
+def get_input_by_id(input_id: int) -> dict:
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT unit FROM inputs WHERE id = :id", {"id": input_id})
+    row = cursor.fetchone()
+    cursor.close()
+    conn.close()
+    return {"unit": row[0]} if row else None
