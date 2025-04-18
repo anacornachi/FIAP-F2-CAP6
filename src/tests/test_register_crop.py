@@ -10,7 +10,7 @@ from src.repositories.crop import get_all_crops
 from src.repositories.input import get_all_inputs
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
-INPUT_FILE = os.path.join(CURRENT_DIR, "../data/exemplo_insumo.json")
+INPUT_FILE = os.path.join(CURRENT_DIR, "../data/insumos.json")
 CROPS_FILE = os.path.join(CURRENT_DIR, "../data/culturas.json")
 
 

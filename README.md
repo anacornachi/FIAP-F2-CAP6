@@ -125,8 +125,113 @@ git clone https://github.com/anacornachi/FIAP-F2-CAP6.git
 cd FIAP-F2-CAP6
 ```
 
+---
 
-*Acrescentar as informações necessárias sobre pré-requisitos (IDEs, serviços, bibliotecas etc.) e instalação básica do projeto, descrevendo eventuais versões utilizadas. Colocar um passo a passo de como o leitor pode baixar o seu código e executá-lo a partir de sua máquina ou seu repositório. Considere a explicação organizada em fase.*
+### 🐍 Fase 2: Criar e ativar ambiente virtual (venv)
+
+#### Linux/Mac:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+#### Windows:
+
+```bash
+python -m venv .venv
+.venv\Scripts\activate
+```
+
+---
+
+### 📦 Fase 3: Instalar as dependências
+
+Certifique-se de que o arquivo `requirements.txt` está na raiz do projeto:
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+### 🔐 Fase 4: Configurar variáveis de ambiente
+
+Crie um arquivo `.env` na raiz do projeto com as seguintes variáveis preenchidas:
+
+```
+ORACLE_USER=seu_usuario
+ORACLE_PASSWORD=sua_senha
+ORACLE_HOST=oracle.fiap.com.br
+ORACLE_PORT=1521
+ORACLE_SERVICE=ORCL
+```
+
+> **Dica:** O `.env` será lido automaticamente pelo projeto para realizar a conexão com o banco Oracle.  
+> O carregamento é feito via `python-dotenv`, já incluída no `requirements.txt`.
+
+---
+
+### 🛠️ Fase 5: Criar as tabelas no banco Oracle
+
+Execute o script abaixo para criar todas as tabelas necessárias:
+
+```bash
+python src/db/setup_db.py
+```
+
+As tabelas criadas serão:
+- `crops`
+- `inputs`
+- `crop_input_applications`
+
+---
+
+### ▶️ Fase 6: Executar o sistema
+
+Com o ambiente configurado, execute o sistema principal via terminal:
+
+```bash
+python src/main.py
+```
+
+Você verá um menu interativo com todas as opções disponíveis, como:
+- Cadastro de culturas
+- Registro e aplicação de insumos
+- Importação via JSON
+- Relatórios
+- Análises preditivas
+- Atualização da data de colheita
+
+---
+
+### 📥 Importação rápida com arquivos de exemplo
+
+O projeto já possui arquivos JSON prontos para popular o banco com dados válidos e começar a testar:
+
+- Culturas: `src/data/culturas.json`
+- Insumos: `src/data/insumos.json`
+
+No terminal, escolha a opção de importação e digite o caminho. Exemplo:
+
+```
+Informe o caminho do arquivo: src/data/culturas.json
+```
+
+---
+
+### 🧪 Fase 7 (opcional): Executar os testes automatizados
+
+```bash
+python -m unittest discover src/tests
+```
+---
+
+### Possíveis erros e soluções
+
+- **Erro: arquivo `.env` não encontrado** → verifique se ele existe e está corretamente preenchido.
+- **Erro de conexão Oracle** → revise seus dados de host, porta e serviço.
+- **Tests não executam** → confira se está rodando o comando dentro do ambiente virtual ativo e se há testes válidos com `test_` no nome do arquivo.
 
 
 ## 🗃 Histórico de lançamentos

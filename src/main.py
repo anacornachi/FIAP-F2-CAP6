@@ -21,38 +21,22 @@ def main():
         option = input("Escolha uma opção: ")
 
         if option == "1":
-            # ✅Feito
             crop_manager.register_crop()
         elif option == "2":
-            # ✅Feito
             crop_manager.import_crops_from_json()
         elif option == "3":
-            # ✅Feito
-            # Fazer teste automatizado
             input_manager.register_input()
         elif option == "4":
-            # ✅Feito
-            # Fazer teste automatizado
             input_manager.import_inputs_from_json()
         elif option == "5":
-            # ✅Feito
-            # Fazer teste automatizado
             input_manager.apply_input_to_crop()
         elif option == "6":
-            # ✅Feito
-            # Fazer teste automatizado
             reports.generate_crop_report()
         elif option == "7":
-            # ✅Feito
-            # Fazer teste automatizado
             reports.generate_input_report()
         elif option == "8":
-            # ✅Feito
-            # Fazer teste automatizado
             forecast.predict_demand()
         elif option == "9":
-            # ✅Feito
-            # Fazer teste automatizado
             crop_manager.update_harvest_date()
         elif option == "10":
             print("Encerrando o programa.")
@@ -62,6 +46,7 @@ def main():
 
 
 if __name__ == "__main__":
+    print(f"📦 Versão do sistema: 0.4.0")
     main()
 
 # TODO: Corrigir os testes

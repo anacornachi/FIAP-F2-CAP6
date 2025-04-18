@@ -1,10 +1,14 @@
 import oracledb
+from dotenv import load_dotenv
+import os
 
-DB_USER = "RM564678"
-DB_PASSWORD = "160600"
-DB_HOST = "oracle.fiap.com.br"
-DB_PORT = 1521
-DB_SERVICE = "ORCL"
+load_dotenv()
+
+DB_USER = os.getenv("ORACLE_USER")
+DB_PASSWORD = os.getenv("ORACLE_PASSWORD")
+DB_HOST = os.getenv("ORACLE_HOST")
+DB_PORT = os.getenv("ORACLE_PORT")
+DB_SERVICE = os.getenv("ORACLE_SERVICE")
 
 
 def get_connection():
