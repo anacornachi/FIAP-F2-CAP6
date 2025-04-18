@@ -28,13 +28,13 @@ Grupo 42
 
 Pequenos produtores rurais enfrentam desafios significativos na gestão da produção agrícola, especialmente no controle do uso de insumos e no planejamento de safras futuras. A falta de ferramentas digitais acessíveis leva muitos a dependerem de registros em papel, dificultando o acompanhamento da produtividade, causando desperdícios, comprometendo o controle financeiro e limitando o acesso a crédito rural.
 
-Outro problema importante é a ausência de previsões baseadas em dados, o que torna o planejamento da próxima safra uma tarefa baseada em suposições, não em análises históricas.
+Outro problema importante é a ausência de previsões baseadas em dados, o que torna o planejamento da próxima safra uma tarefa sujeita a suposições, e não a análises históricas confiáveis.
 
 Segundo a Embrapa, 61% dos produtores rurais apontam a falta de infraestrutura de conectividade como o principal obstáculo para a adoção de tecnologias digitais no campo. Soma-se a isso o fato de que muitos ainda utilizam métodos tradicionais e empíricos, transmitidos de geração em geração, o que limita a eficiência e a precisão na gestão agrícola.
 
 ### Objetivo da Solução
 
-Desenvolver um sistema simples em Python, acessível via terminal, que permita ao pequeno produtor rural registrar suas culturas e insumos utilizados, armazenar os dados localmente em JSON (ou banco Oracle, em uma versão alternativa) e, a partir desses dados, gerar relatórios e realizar **previsões de demanda futura por insumos agrícolas** usando **regressão linear**.
+Desenvolver um sistema simples em Python, acessível via terminal, que permita ao pequeno produtor rural registrar suas culturas e insumos utilizados, armazenar os dados em banco Oracle e, a partir desses dados, gerar relatórios e realizar **previsões de demanda futura por insumos agrícolas** usando **regressão linear**.
 
 A proposta é facilitar a gestão da produção e fornecer uma base para tomada de decisões mais eficientes, promovendo autonomia e organização no campo.
 
@@ -46,11 +46,12 @@ O uso de regressão linear como base estatística para previsão agrega inovaç�
 ### Funcionalidades da solução
 
 1. **Cadastro de cultura**: O usuário poderá registrar informações como nome da cultura, datas de plantio e colheita, área plantada e produtividade.
-2. **Registro de insumo**: Será possível registrar fertilizantes e outros insumos utilizados, associando-os a uma cultura e a uma data de aplicação.
+2. **Registro de insumo**: Será possível registrar fertilizantes, sementes ou defensivos, informando tipo, unidade, valor por unidade e vinculando-os opcionalmente a uma cultura com data e frequência de aplicação.
 3. **Relatórios por cultura ou safra**: O sistema irá gerar relatórios limpos e organizados com as informações cadastradas.
-4. **Previsão de demanda por insumo**: Com base no histórico de uso, o sistema aplicará regressão linear para prever a quantidade necessária para o próximo ciclo agrícola.
-5. **Validação de entrada**: O sistema incluirá verificações para garantir que os dados inseridos estejam corretos (por exemplo, impedir letras em campos numéricos).
-6. **Persistência de dados**: Os dados serão armazenados localmente em arquivos JSON. Em uma versão expandida, haverá integração com banco Oracle simulando um cenário real de gestão de dados.
+4. **Importação de dados via JSON**: Os dados podem ser importados de arquivos JSON, facilitando testes em lote e simulações realistas de uso.
+5. **Previsão de demanda por insumo**: Com base no histórico de uso, o sistema aplicará regressão linear para prever a quantidade necessária para o próximo ciclo agrícola.
+6. **Validação de entrada**: O sistema incluirá verificações para garantir que os dados inseridos estejam corretos (por exemplo, impedir letras em campos numéricos).
+7. **Persistência de dados**: Os dados são armazenados no banco Oracle simulando um cenário real de gestão de dados.
 
 ### Aplicação de conteúdos do curso
 
@@ -103,6 +104,28 @@ Dentre os arquivos e pastas presentes na raiz do projeto, definem-se:
 
 ## 🔧 Como executar o código
 
+Este projeto foi desenvolvido em Python e executa via terminal, com foco em acessibilidade para pequenos produtores e integração com banco de dados Oracle. Abaixo, você encontrará todas as instruções necessárias para configurar o ambiente e rodar o projeto em sua máquina.
+
+---
+
+### ✅ Pré-requisitos
+
+- [Python 3.9+](https://www.python.org/downloads/)
+- Git
+- Oracle Instant Client instalado e configurado (ou conexão com banco Oracle da FIAP)
+- Acesso ao terminal ou prompt de comando
+- IDE recomendada: VSCode ou PyCharm
+
+---
+
+### 🧪 Fase 1: Clonar o projeto
+
+```bash
+git clone https://github.com/anacornachi/FIAP-F2-CAP6.git
+cd FIAP-F2-CAP6
+```
+
+
 *Acrescentar as informações necessárias sobre pré-requisitos (IDEs, serviços, bibliotecas etc.) e instalação básica do projeto, descrevendo eventuais versões utilizadas. Colocar um passo a passo de como o leitor pode baixar o seu código e executá-lo a partir de sua máquina ou seu repositório. Considere a explicação organizada em fase.*
 
 
@@ -133,7 +156,21 @@ Dentre os arquivos e pastas presentes na raiz do projeto, definem-se:
       * Aplicação de insumo em cultura
       * Casos de erro e borda com mensagens específicas
     * Correção de mensagens de erro e validações para melhorar a experiência do usuário final.
-
+* 0.4.0 - 18/04/2025
+    * Criação do fluxo de atualização da data de colheita de culturas, com listagem de registros e validação de entrada.
+    * Isolamento da lógica de acesso ao banco em repositórios (get_all_crops, update_crop_harvest_date) para maior organização e reutilização.
+    * Revisão da função de previsão de demanda com aplicação de regressão linear múltipla utilizando scikit-learn.
+    * Inclusão de novos indicadores no relatório preditivo:
+      * Previsão de quantidade por insumo
+      * Custo estimado com base no preço unitário
+      * Índice de Eficiência do Insumo (IEI)
+      * Classificação de eficiência (alta, média, baixa)
+      * Uso médio por hectare
+    * Melhorias na apresentação textual dos relatórios no terminal, com legendas e explicações finais.
+    * Padronização da experiência do usuário com uso de ícones, linguagem acessível e validação de respostas em português.
+    * Revisão da documentação principal (README.md) com ajustes na descrição PBL, mantendo o limite de 600 palavras.
+    * Organização e limpeza do projeto: remoção de métodos duplicados e refatoração de chamadas diretas ao banco.
+  
 ## 📋 Licença
 
 <img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1"><p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/"><a property="dct:title" rel="cc:attributionURL" href="https://github.com/agodoi/template">MODELO GIT FIAP</a> por <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://fiap.com.br">Fiap</a> está licenciado sobre <a href="http://creativecommons.org/licenses/by/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">Attribution 4.0 International</a>.</p>

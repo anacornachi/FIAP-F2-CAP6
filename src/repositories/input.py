@@ -35,13 +35,24 @@ def save_input_application_to_db(data: dict):
 def get_all_inputs():
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute("SELECT id, input_type, input_name FROM inputs")
+    cursor.execute("""
+        SELECT id, input_name, input_type, unit, unit_price
+        FROM inputs
+    """)
     rows = cursor.fetchall()
-    columns = [desc[0].lower() for desc in cursor.description]
     cursor.close()
     conn.close()
-    return [dict(zip(columns, row)) for row in rows]
 
+    return [
+        {
+            "id": row[0],
+            "input_name": row[1],
+            "input_type": row[2],
+            "unit": row[3],
+            "unit_price": row[4]
+        }
+        for row in rows
+    ]
 
 def get_input_by_id(input_id: int) -> dict:
     conn = get_connection()
@@ -51,3 +62,52 @@ def get_input_by_id(input_id: int) -> dict:
     cursor.close()
     conn.close()
     return {"unit": row[0]} if row else None
+
+def get_applications_by_crop_id(crop_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT i.input_name, i.input_type, a.quantity, a.unit, a.application_date
+        FROM crop_input_applications a
+        JOIN inputs i ON i.id = a.input_id
+        WHERE a.crop_id = :crop_id
+    """, {"crop_id": crop_id})
+
+    rows = cursor.fetchall()
+    cursor.close()
+    conn.close()
+
+    return [
+        {
+            "input_name": row[0],
+            "input_type": row[1],
+            "quantity": row[2],
+            "unit": row[3],
+            "application_date": row[4],
+        }
+        for row in rows
+    ]
+
+def get_applications_by_input_id(input_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT c.name, a.quantity, a.unit, a.application_date
+        FROM crop_input_applications a
+        JOIN crops c ON c.id = a.crop_id
+        WHERE a.input_id = :input_id
+    """, {"input_id": input_id})
+
+    rows = cursor.fetchall()
+    cursor.close()
+    conn.close()
+
+    return [
+        {
+            "crop_name": row[0],
+            "quantity": row[1],
+            "unit": row[2],
+            "application_date": row[3],
+        }
+        for row in rows
+    ]

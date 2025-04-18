@@ -1,8 +1,11 @@
-from src.db.oracle import get_connection
-from src.repositories.crop import save_crop_to_db
-from src.schemas.crop_schema import crop_schema
+from datetime import datetime
+
 from src.validations import prompt_and_validate, validate_with_schema
-from src.files import save_data, load_json_list, load_data
+from src.schemas.crop_schema import crop_schema
+from src.files import load_json_list
+
+from src.repositories.crop import save_crop_to_db, update_crop_harvest_date
+from src.repositories.crop import get_all_crops
 
 
 def register_crop():
@@ -47,51 +50,52 @@ def import_crops_from_json():
         print(f"❌ {failure} cultura(s) com erro(s) e não foram importadas.")
 
 
-def get_all_crops():
-    conn = get_connection()
-    cursor = conn.cursor()
+def update_harvest_date():
+    print("\n🌾 Atualizar data de colheita de uma cultura")
 
-    cursor.execute(
-        "SELECT name, planting_date, harvest_date, area, productivity FROM crops"
-    )
-    rows = cursor.fetchall()
+    try:
+        cultures = get_all_crops()
+    except Exception as e:
+        print(f"❌ Erro ao buscar culturas: {e}")
+        return
 
-    columns = [desc[0].lower() for desc in cursor.description]
-    crops = [dict(zip(columns, row)) for row in rows]
+    if not cultures:
+        print("⚠️ Nenhuma cultura cadastrada.")
+        return
 
-    cursor.close()
-    conn.close()
-    return crops
+    print("\n🌱 Culturas disponíveis:")
+    for crop in cultures:
+        status = "✅" if crop.get("harvest_date") else "⏳"
+        print(f"{crop['id']}: {crop['name']} (Plantio: {crop['planting_date'].strftime('%Y-%m-%d')}) {status}")
 
+    try:
+        crop_id = int(input("\nDigite o número da cultura que deseja atualizar: ").strip())
+    except ValueError:
+        print("❌ Entrada inválida. Use um número.")
+        return
 
-# def update_harvest_date():
-#     print("\n🌾 Atualizar data de colheita")
-#     name = input("Nome da cultura: ").strip()
-#     crops = load_data(CROPS_FILE)
-#     updated = False
-#
-#     for crop in crops:
-#         if crop["name"].lower() == name.lower():
-#             if crop.get("harvest_date"):
-#                 print("⚠️ Esta cultura já possui data de colheita.")
-#             else:
-#                 new_date = input("Nova data de colheita (AAAA-MM-DD): ").strip()
-#                 crop["harvest_date"] = new_date
-#                 is_valid, result = validate_with_schema(crop_schema, crop)
-#                 if is_valid:
-#                     updated = True
-#                 else:
-#                     print("❌ Data inválida. Atualização não realizada.")
-#                     return
-#
-#     if updated:
-#         save_data(CROPS_FILE, crops, overwrite=True)
-#         print("✅ Data de colheita atualizada.")
-#     else:
-#         print("❌ Cultura não encontrada ou já atualizada.")
+    matching_crop = next((c for c in cultures if c["id"] == crop_id), None)
+    if not matching_crop:
+        print("❌ Cultura não encontrada.")
+        return
 
+    if matching_crop["harvest_date"]:
+        print("⚠️ Esta cultura já possui data de colheita.")
+        overwrite = input("Deseja sobrescrever a data atual? (s/n): ").strip().lower()
+        if overwrite != "s":
+            print("❌ Atualização cancelada.")
+            return
 
-if __name__ == "__main__":
-    all_crops = get_all_crops()
-    for crop in all_crops:
-        print(crop)
+    while True:
+        new_date_str = input("Informe a nova data de colheita (AAAA-MM-DD): ").strip()
+        try:
+            datetime.strptime(new_date_str, "%Y-%m-%d")
+            break
+        except ValueError:
+            print("❌ Formato inválido. Use o formato AAAA-MM-DD.")
+
+    try:
+        update_crop_harvest_date(crop_id, new_date_str)
+        print("✅ Data de colheita atualizada com sucesso.")
+    except Exception as e:
+        print(f"❌ Erro ao atualizar a cultura: {e}")

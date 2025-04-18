@@ -41,9 +41,37 @@ def save_crop_to_db(crop_data):
 def get_all_crops():
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute("SELECT id, name FROM crops")
+    cursor.execute("""
+        SELECT id, name, planting_date, harvest_date, area, productivity
+        FROM crops
+    """)
     rows = cursor.fetchall()
-    columns = [desc[0].lower() for desc in cursor.description]
     cursor.close()
     conn.close()
-    return [dict(zip(columns, row)) for row in rows]
+
+    return [
+        {
+            "id": row[0],
+            "name": row[1],
+            "planting_date": row[2],
+            "harvest_date": row[3],
+            "area": row[4],
+            "productivity": row[5]
+        }
+        for row in rows
+    ]
+
+
+def update_crop_harvest_date(crop_id: int, harvest_date: str):
+    conn = get_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("""
+                UPDATE crops
+                SET harvest_date = TO_DATE(:harvest_date, 'YYYY-MM-DD')
+                WHERE id = :crop_id
+            """, {"harvest_date": harvest_date, "crop_id": crop_id})
+        conn.commit()
+    finally:
+        cursor.close()
+        conn.close()
