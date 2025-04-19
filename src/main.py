@@ -1,5 +1,6 @@
+import warnings
+warnings.filterwarnings("ignore")
 from src import crop_manager, forecast, reports, input_manager
-
 
 def show_menu():
     print("\n=== Sistema de Gestão Agrícola ===")
@@ -49,6 +50,4 @@ if __name__ == "__main__":
     print(f"📦 Versão do sistema: 0.4.0")
     main()
 
-# TODO: Corrigir os testes
-# TODO: Revisar documentação
 # TOOD: Revisar entregável do projeto

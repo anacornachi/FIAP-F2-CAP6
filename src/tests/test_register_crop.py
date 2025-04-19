@@ -1,3 +1,6 @@
+import warnings
+warnings.filterwarnings("ignore")
+
 import unittest
 from unittest.mock import patch
 import io
@@ -104,7 +107,7 @@ class TestInputManagement(unittest.TestCase):
 
     @patch("builtins.input")
     def test_register_input_missing_name(self, mock_input):
-        mock_input.side_effect = ["fertilizante", "", "kg", "4.5", "n"]
+        mock_input.side_effect = ["fertilizante", "", "NPK" ,"kg", "4.5", "n"]
         captured_output = io.StringIO()
         sys_stdout_backup = sys.stdout
         sys.stdout = captured_output
@@ -115,11 +118,11 @@ class TestInputManagement(unittest.TestCase):
         finally:
             sys.stdout = sys_stdout_backup
 
-        self.assertIn("❌ Este campo não pode ficar em branco.", output)
+        self.assertIn("❌ Este campo é obrigatório.", output)
 
     @patch("builtins.input")
     def test_register_input_invalid_unit(self, mock_input):
-        mock_input.side_effect = ["fertilizante", "Produto X", "kilo", "4.5", "n"]
+        mock_input.side_effect = ["fertilizante", "Produto X", "kilo", "kg", "4.5", "n"]
         captured_output = io.StringIO()
         sys_stdout_backup = sys.stdout
         sys.stdout = captured_output
@@ -131,6 +134,7 @@ class TestInputManagement(unittest.TestCase):
             sys.stdout = sys_stdout_backup
 
         self.assertIn("❌ Valor não permitido. Escolha uma das opções válidas.", output)
+        self.assertIn("✅ Insumo cadastrado com sucesso", output)
 
     @patch("builtins.input")
     def test_register_input_invalid_price_format(self, mock_input):

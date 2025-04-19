@@ -79,6 +79,14 @@ def apply_input_to_crop():
         while True:
             value = input(label).strip()
 
+            if field == "application_date" and value:
+                from datetime import datetime
+                try:
+                    datetime.strptime(value, "%Y-%m-%d")
+                except ValueError:
+                    print("❌ Formato inválido. Use o formato AAAA-MM-DD.")
+                    continue
+
             if field in ["unit", "input_type", "recurrence"]:
                 value = value.lower()
 

@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv()
-
+#
 DB_USER = os.getenv("ORACLE_USER")
 DB_PASSWORD = os.getenv("ORACLE_PASSWORD")
 DB_HOST = os.getenv("ORACLE_HOST")

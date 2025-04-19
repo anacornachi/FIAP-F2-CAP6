@@ -1,3 +1,6 @@
+import warnings
+warnings.filterwarnings("ignore")
+
 import unittest
 from unittest.mock import patch
 from src.validations import prompt_and_validate
